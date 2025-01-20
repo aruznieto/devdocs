@@ -75,16 +75,28 @@ module Docs
       end
     end
 
+    version '8.0' do
+      self.release = '8.0.1'
+    end
+
+    version '7.2' do
+      self.release = '7.2.1'
+    end
+
+    version '7.1' do
+      self.release = '7.1.2'
+    end
+
     version '7.0' do
-      self.release = '7.0.0'
+      self.release = '7.0.8'
     end
 
     version '6.1' do
-      self.release = '6.1.4'
+      self.release = '6.1.7'
     end
 
     version '6.0' do
-      self.release = '6.0.4'
+      self.release = '6.0.6'
     end
 
     version '5.2' do

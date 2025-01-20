@@ -19,9 +19,14 @@ module Docs
       Maps &copy; OpenStreetMap contributors.
     HTML
 
+    version '1.9' do
+      self.release = '1.9.4'
+      self.base_url = "https://leafletjs.com/reference.html"
+    end
+
     version '1.8' do
       self.release = '1.8.0'
-      self.base_url = "https://leafletjs.com/SlavaUkraini/reference.html"
+      self.base_url = "https://leafletjs.com/reference-#{release}.html"
     end
 
     version '1.7' do
@@ -65,9 +70,7 @@ module Docs
     end
 
     def get_latest_version(opts)
-      doc = fetch_doc('https://leafletjs.com/reference-versions.html', opts)
-      link = doc.at_css('.container > ul > li:last-child > a').content
-      link.sub(/[a-zA-Z\s]*/, '')
+      get_npm_version('leaflet', opts)
     end
   end
 end

@@ -16,9 +16,45 @@ module Docs
     options[:skip] = %w(api_changes.html tutorial.html faq.html)
 
     options[:attribution] = <<-HTML
-      &copy; 2012&ndash;2021 Matplotlib Development Team. All rights reserved.<br>
+      &copy; 2012&ndash;2023 Matplotlib Development Team. All rights reserved.<br>
       Licensed under the Matplotlib License Agreement.
     HTML
+
+    version do
+      self.release = '3.9.2'
+      self.base_urls = [
+        "https://matplotlib.org/stable/api/",
+        "https://matplotlib.org/stable/mpl_toolkits/mplot3d/",
+        "https://matplotlib.org/stable/mpl_toolkits/axes_grid/api/"
+      ]
+    end
+
+    version '3.8' do
+      self.release = '3.8.4'
+      self.base_urls = [
+        "https://matplotlib.org/#{release}/api/",
+        "https://matplotlib.org/#{release}/mpl_toolkits/mplot3d/",
+        "https://matplotlib.org/#{release}/mpl_toolkits/axes_grid/api/"
+      ]
+    end
+
+    version '3.7' do
+      self.release = '3.7.5'
+      self.base_urls = [
+        "https://matplotlib.org/#{release}/api/",
+        "https://matplotlib.org/#{release}/mpl_toolkits/mplot3d/",
+        "https://matplotlib.org/#{release}/mpl_toolkits/axes_grid/api/"
+      ]
+    end
+
+    version '3.6' do
+      self.release = '3.6.0'
+      self.base_urls = [
+        "https://matplotlib.org/#{release}/api/",
+        "https://matplotlib.org/#{release}/mpl_toolkits/mplot3d/",
+        "https://matplotlib.org/#{release}/mpl_toolkits/axes_grid/api/"
+      ]
+    end
 
     version '3.5' do
       self.release = '3.5.1'

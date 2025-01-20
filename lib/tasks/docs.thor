@@ -162,8 +162,6 @@ class DocsCLI < Thor
   option :dryrun, type: :boolean
   option :packaged, type: :boolean
   def upload(*names)
-    require 'net/sftp'
-
     if options[:packaged]
       slugs = Dir[File.join(Docs.store_path, '*.tar.gz')].map { |f| File.basename(f, '.tar.gz') }
       docs = find_docs_by_slugs(slugs)
@@ -175,12 +173,12 @@ class DocsCLI < Thor
 
     # Verify files are present
     docs.each do |doc|
-      unless Dir.exists?(File.join(Docs.store_path, doc.path))
+      unless Dir.exist?(File.join(Docs.store_path, doc.path))
         puts "ERROR: directory #{File.join(Docs.store_path, doc.path)} not found."
         return
       end
 
-      unless File.exists?(File.join(Docs.store_path, "#{doc.path}.tar.gz"))
+      unless File.exist?(File.join(Docs.store_path, "#{doc.path}.tar.gz"))
         puts "ERROR: package for '#{doc.slug}' documentation not found. Run 'thor docs:package #{doc.slug}' to create it."
         return
       end
@@ -241,7 +239,7 @@ class DocsCLI < Thor
           ['index.json', 'meta.json'].each do |filename|
             json = "https://documents.devdocs.io/#{doc.path}/#{filename}?#{time}"
             begin
-              open(json) do |file|
+              URI.open(json) do |file|
                 mutex.synchronize do
                   path = File.join(dir, filename)
                   File.write(path, file.read)
@@ -343,6 +341,7 @@ class DocsCLI < Thor
       file.close
       tar = UnixUtils.gunzip(file.path)
       dir = UnixUtils.untar(tar)
+      FileUtils.rm(tar)
       FileUtils.rm_rf(target_path)
       FileUtils.mv(dir, target_path)
       FileUtils.rm(file.path)

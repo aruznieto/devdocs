@@ -2,7 +2,7 @@ module Docs
   class Crystal < UrlScraper
     include MultipleBaseUrls
     self.type = 'crystal'
-    self.release = '1.4.0'
+    self.release = '1.15.0'
     self.base_urls = [
       "https://crystal-lang.org/api/#{release}/",
       "https://crystal-lang.org/reference/#{release[0..2]}/",
@@ -19,6 +19,13 @@ module Docs
 
     html_filters.push 'crystal/entries', 'crystal/clean_html'
 
+    options[:skip_patterns] = [
+      %r{\ACrystal/System/},
+      %r{\ACrystal/PointerPairingHeap/},
+      %r{\AIO/Evented.html\z},
+      %r{\ARegex/PCRE2.html\z}
+    ]
+
     options[:attribution] = ->(filter) {
       if filter.current_url.path.start_with?('/reference/')
         <<-HTML
@@ -28,7 +35,7 @@ module Docs
         HTML
       else
         <<-HTML
-          &copy; 2012&ndash;2022 Manas Technology Solutions.<br>
+          &copy; 2012&ndash;2025 Manas Technology Solutions.<br>
           Licensed under the Apache License, Version 2.0.
         HTML
       end
@@ -36,7 +43,7 @@ module Docs
 
     def get_latest_version(opts)
       doc = fetch_doc('https://crystal-lang.org/', opts)
-      doc.at_css('.latest-release').content.scan(/([0-9.]+)/)[0][0]
+      doc.at_css('.latest-release-info > a > strong').content.scan(/([0-9.]+)/)[0][0]
     end
   end
 end

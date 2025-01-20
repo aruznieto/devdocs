@@ -2,7 +2,7 @@ module Docs
   class Electron < UrlScraper
     self.type = 'simple'
     self.base_url = 'https://www.electronjs.org/docs/latest'
-    self.release = '18.0.1'
+    self.release = '20.0.0'
     self.links = {
       home: 'https://www.electronjs.org/',
       code: 'https://github.com/electron/electron'
@@ -27,7 +27,7 @@ module Docs
 
     def get_latest_version(opts)
       doc = fetch_doc('https://www.electronjs.org/releases/stable', opts)
-      doc.at_css(".tag").content.gsub!(/[a-zA-Z]/, '')
+      doc.at_css('.release-card__metadata>a')['href'].gsub!(/[a-zA-Z\/:]/, '')[1..-1]
     end
   end
 end

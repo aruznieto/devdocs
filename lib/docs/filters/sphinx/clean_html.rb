@@ -36,9 +36,11 @@ module Docs
           node.replace(pre)
         end
 
-        css('span[id]:empty').each do |node|
-          (node.next_element || node.previous_element)['id'] ||= node['id'] if node.next_element || node.previous_element
-          node.remove
+        unless context[:sphinx_keep_empty_ids]
+          css('span[id]:empty').each do |node|
+            (node.next_element || node.previous_element)['id'] ||= node['id'] if node.next_element || node.previous_element
+            node.remove
+          end
         end
 
         css('.section').each do |node|
@@ -60,6 +62,8 @@ module Docs
         css('dt').each do |node|
           next if current_url.host == 'matplotlib.org'
           next if current_url.host == 'numpy.org'
+          next if current_url.host == 'requests.readthedocs.io'
+          next if current_url.host == 'scikit-learn.org'
           next unless node['id'] || node.at_css('code, .classifier')
           links = []
           links << node.children.last.remove while node.children.last.try(:name) == 'a'

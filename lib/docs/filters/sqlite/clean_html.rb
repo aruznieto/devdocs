@@ -56,10 +56,14 @@ module Docs
             else
               node.next_element['id'] = node['name']
             end
+            node.remove
+          elsif node.parent.name == 'p'
+            node['id'] = node['name']
+            node.parent.after(node.remove)
           else
             node.parent['id'] ||= node['name']
+            node.remove
           end
-          node.remove
         end
 
         unless at_css('h2')
@@ -84,6 +88,7 @@ module Docs
         end
 
         css('svg *[style], svg *[fill]').each do |node|
+          next if slug == 'geopoly'
           # transform style in SVG diagrams, e.g. on https://sqlite.org/lang_insert.html
           if node['style'] == 'fill:rgb(0,0,0)' or node['fill'] == 'rgb(0,0,0)'
             node.add_class('fill')

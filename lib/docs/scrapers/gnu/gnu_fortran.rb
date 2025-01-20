@@ -6,6 +6,21 @@ module Docs
       home: 'https://gcc.gnu.org/fortran/'
     }
 
+    version '14' do
+      self.release = '14.2.0'
+      self.base_url = "https://gcc.gnu.org/onlinedocs/gcc-#{release}/gfortran/"
+    end
+
+    version '13' do
+      self.release = '13.3.0'
+      self.base_url = "https://gcc.gnu.org/onlinedocs/gcc-#{release}/gfortran/"
+    end
+
+    version '12' do
+      self.release = '12.1.0'
+      self.base_url = "https://gcc.gnu.org/onlinedocs/gcc-#{release}/gfortran/"
+    end
+
     version '11' do
       self.release = '11.1.0'
       self.base_url = "https://gcc.gnu.org/onlinedocs/gcc-#{release}/gfortran/"
@@ -48,8 +63,8 @@ module Docs
 
     def get_latest_version(opts)
       doc = fetch_doc('https://gcc.gnu.org/onlinedocs/', opts)
-      label = doc.at_css('ul > li > ul > li > a').content.strip
-      label.scan(/([0-9.]+)/)[0][0]
+      label = doc.at_css('details > ul > li > a')['href'].strip
+      label.scan(/([0-9.]+)/)[2..-1][0][0]
     end
   end
 end

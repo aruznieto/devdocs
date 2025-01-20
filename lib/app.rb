@@ -37,6 +37,7 @@ class App < Sinatra::Application
 
     require 'docs'
     Docs.generate_manifest
+    set :docs_aliases, Docs.aliases
 
     Dir[docs_path, root.join(assets_prefix, '*/')].each do |path|
       sprockets.append_path(path)
@@ -56,7 +57,6 @@ class App < Sinatra::Application
 
     SpritesCLI.new.invoke(:generate, [], :disable_optimization => true)
 
-    require 'active_support/per_thread_registry'
     require 'active_support/cache'
     sprockets.cache = ActiveSupport::Cache.lookup_store :file_store, root.join('tmp', 'cache', 'assets', environment.to_s)
   end
@@ -94,7 +94,7 @@ class App < Sinatra::Application
         ['/manifest.json',  { 'Cache-Control' => 'public, max-age=86400'  }]
       ]
 
-    sprockets.js_compressor = Uglifier.new output: { beautify: true, indent_level: 0 }
+    sprockets.js_compressor = Terser.new
     sprockets.css_compressor = :sass
 
     Sprockets::Helpers.configure do |config|
@@ -238,7 +238,22 @@ class App < Sinatra::Application
     end
 
     def supports_js_redirection?
-      browser.modern? && !memoized_cookies.empty?
+      modern_browser?(browser) && !memoized_cookies.empty?
+    end
+
+    # https://github.com/fnando/browser#detecting-modern-browsers
+    # https://github.com/fnando/browser/blob/v2.6.1/lib/browser/browser.rb
+    # This restores the old browser gem `#modern?` functionality as it was in 2.6.1
+    # It's possible this isn't even really needed any longer, these versions are quite old now
+    def modern_browser?(browser)
+      [
+        browser.webkit?,
+        browser.firefox? && browser.version.to_i >= 17,
+        browser.ie? && browser.version.to_i >= 9 && !browser.compatibility_view?,
+        browser.edge? && !browser.compatibility_view?,
+        browser.opera? && browser.version.to_i >= 12,
+        browser.firefox? && browser.device.tablet? && browser.platform.android? && b.version.to_i >= 14
+      ].any?
     end
   end
 

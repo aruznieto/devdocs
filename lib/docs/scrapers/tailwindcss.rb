@@ -5,9 +5,9 @@ module Docs
     self.slug = 'tailwindcss'
     self.base_url = 'https://tailwindcss.com/docs'
     self.root_path = '/'
-    self.release = '3.0.23'
+    self.release = '3.3.2'
     self.links = {
-      home: 'tps://tailwindcss.com/',
+      home: 'https://tailwindcss.com/',
       code: 'https://github.com/tailwindlabs/tailwindcss'
     }
 

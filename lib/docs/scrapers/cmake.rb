@@ -4,7 +4,7 @@ module Docs
     self.type = 'sphinx_simple'
     self.links = {
       home: 'https://cmake.org/',
-      code: 'https://cmake.org/gitweb?p=cmake.git;a=summary'
+      code: 'https://gitlab.kitware.com/cmake/cmake/'
     }
 
     html_filters.push 'cmake/clean_html', 'sphinx/clean_html', 'cmake/entries', 'title'
@@ -16,9 +16,63 @@ module Docs
     options[:skip_patterns] = [/\Agenerator/, /\Acpack_gen/, /\Ainclude/, /\Arelease/, /tutorial\/(\w*%20)+/]
 
     options[:attribution] = <<-HTML
-      &copy; 2000&ndash;2021 Kitware, Inc. and Contributors<br>
+      &copy; 2000&ndash;2024 Kitware, Inc. and Contributors<br>
       Licensed under the BSD 3-clause License.
     HTML
+
+    version do
+      self.base_url = "https://cmake.org/cmake/help/latest/"
+    end
+
+    version '3.31' do
+      self.release = '3.31'
+      self.base_url = "https://cmake.org/cmake/help/v#{self.version}/"
+    end
+
+    version '3.30' do
+      self.release = '3.30'
+      self.base_url = "https://cmake.org/cmake/help/v#{self.version}/"
+    end
+
+    version '3.29' do
+      self.release = '3.29'
+      self.base_url = "https://cmake.org/cmake/help/v#{self.version}/"
+    end
+
+    version '3.28' do
+      self.release = '3.28'
+      self.base_url = "https://cmake.org/cmake/help/v#{self.version}/"
+    end
+
+    version '3.27' do
+      self.release = '3.27'
+      self.base_url = "https://cmake.org/cmake/help/v#{self.version}/"
+    end
+
+    version '3.26' do
+      self.release = '3.26'
+      self.base_url = "https://cmake.org/cmake/help/v#{self.version}/"
+    end
+
+    version '3.25' do
+      self.release = '3.25'
+      self.base_url = "https://cmake.org/cmake/help/v#{self.version}/"
+    end
+
+    version '3.24' do
+      self.release = '3.24'
+      self.base_url = "https://cmake.org/cmake/help/v#{self.version}/"
+    end
+
+    version '3.23' do
+      self.release = '3.23'
+      self.base_url = "https://cmake.org/cmake/help/v#{self.version}/"
+    end
+
+    version '3.22' do
+      self.release = '3.22'
+      self.base_url = "https://cmake.org/cmake/help/v#{self.version}/"
+    end
 
     version '3.21' do
       self.release = '3.21'
@@ -106,9 +160,8 @@ module Docs
     end
 
     def get_latest_version(opts)
-      doc = fetch_doc('https://cmake.org/documentation/', opts)
-      link = doc.at_css('.entry-content ul > li > strong > a > big')
-      link.content.scan(/([0-9.]+)/)[0][0]
+      tags = get_gitlab_tags('gitlab.kitware.com', 'cmake', 'cmake', opts)
+      tags[0]['name'][1..]
     end
   end
 end

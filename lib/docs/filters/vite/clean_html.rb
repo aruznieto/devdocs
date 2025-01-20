@@ -2,8 +2,10 @@ module Docs
   class Vite
     class CleanHtmlFilter < Filter
       def call
-        return '<h1>Vite</h1>' if root_page?
-        @doc = at_css('main .content > div')
+        return "<h1>Vitest</h1><p>A Vite-native unit test framework. It's fast!</p>" if root_page? && current_url.host == 'vitest.dev'
+        return "<h1>VueUse</h1><p>Collection of Vue Composition Utilities</p>" if root_page? && current_url.host == 'vueuse.org'
+        return '<h1>Vite</h1><p>Next Generation Frontend Tooling</p>' if root_page?
+        @doc = at_css('main h1').parent
 
         css('.demo', '.guide-links', '.footer', '#ad').remove
         css('.header-anchor', '.page-edit', '.page-nav').remove
@@ -14,6 +16,7 @@ module Docs
 
         # Remove CodePen div
         css('.codepen').each do |node|
+          raise "dsfsdfsdf"
           next if node.previous_element.nil?
           span = node.css('span:contains("See the Pen")').remove
           node.previous_element.add_child(' ')
@@ -21,13 +24,7 @@ module Docs
           node.remove
         end
 
-        # Remove code highlighting
-        css('figure').each do |node|
-          node.name = 'pre'
-          node.content = node.at_css('td.code pre').css('.line').map(&:content).join("\n")
-          node['data-language'] = node['class'][/highlight (\w+)/, 1]
-        end
-
+        css('.lang').remove
         css('.line-numbers-wrapper').remove
         css('pre').each do |node|
           node.content = node.content.strip

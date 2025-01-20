@@ -12,6 +12,7 @@ module Docs
         '.button.section-edit',
         '.communitybox',
         '#Quick_Links',
+        'aside.metadata',
         'hr']
 
       BROWSER_UNNECESSARY_CLASS_REGEX = /\s*bc-browser[\w_-]+/
@@ -70,6 +71,8 @@ module Docs
           node.content = node.content
           node.remove_attribute('class')
         end
+
+        css('.example-header').remove
 
         css('table').each do |node|
           node.before %(<div class="_table"></div>)

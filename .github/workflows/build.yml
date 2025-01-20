@@ -11,15 +11,15 @@ jobs:
     runs-on: ubuntu-20.04
     if: github.repository == 'freeCodeCamp/devdocs'
     steps:
-    - uses: actions/checkout@v2.4.1
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: Set up Ruby
-      uses: ruby/setup-ruby@v1.101.0
+      uses: ruby/setup-ruby@28c4deda893d5a96a6b2d958c5b47fc18d65c9d3 # v1.213.0
       with:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Run tests
       run: bundle exec rake
     - name: Deploy to Heroku
-      uses: akhileshns/heroku-deploy@v3.12.12
+      uses: akhileshns/heroku-deploy@581dd286c962b6972d427fcf8980f60755c15520 # v3.13.15
       with:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
         heroku_app_name: "devdocs"

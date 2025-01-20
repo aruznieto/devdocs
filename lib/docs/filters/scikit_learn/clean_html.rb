@@ -2,6 +2,7 @@ module Docs
   class ScikitLearn
     class CleanHtmlFilter < Filter
       def call
+        @doc = at_css('main article', 'main')
         if root_page?
           css('.row').each do |node|
             html = '<dl>'
@@ -15,6 +16,10 @@ module Docs
             node.replace(html)
           end
         end
+
+        # Most often comes with a link with the same text so we're removing
+        # these.
+        css('.sphx-glr-thumbnail-title').each do |node| node.remove end
 
         css('.sphx-glr-signature').remove
 

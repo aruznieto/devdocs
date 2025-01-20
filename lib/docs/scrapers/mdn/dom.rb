@@ -1,10 +1,13 @@
 module Docs
   class Dom < Mdn
-
-    # release = '2021-12-07'
+    # release = '2023-08-20'
     self.name = 'Web APIs'
     self.slug = 'dom'
     self.base_url = 'https://developer.mozilla.org/en-US/docs/Web/API'
+    self.links = {
+      home: 'https://developer.mozilla.org/en-US/docs/Web/API',
+      code: 'https://github.com/mdn/content/tree/main/files/en-us/web/api'
+    }
 
     html_filters.push 'dom/clean_html', 'dom/entries'
 

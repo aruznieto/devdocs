@@ -6,7 +6,7 @@ module Docs
     self.initial_paths = %w(intro.html configuration.html management.html)
     self.links = {
       home: 'https://www.haproxy.org/',
-      code: 'https://github.com/haproxy/haproxy/'
+      code: 'https://github.com/haproxy/haproxy'
     }
 
     html_filters.push 'haproxy/clean_html', 'haproxy/entries'
@@ -16,13 +16,43 @@ module Docs
     options[:follow_links] = false
 
     options[:attribution] = <<-HTML
-      &copy; 2021 Willy Tarreau, HAProxy contributors<br>
+      &copy; 2024 Willy Tarreau, HAProxy contributors<br>
       Licensed under the GNU General Public License version 2.
     HTML
 
+    version '3.0' do
+      self.release = '3.0.0'
+      self.base_url = "https://docs.haproxy.org/#{self.version}/"
+    end
+
+    version '2.9' do
+      self.release = '2.9.0'
+      self.base_url = "https://docs.haproxy.org/#{self.version}/"
+    end
+
+    version '2.8' do
+      self.release = '2.8.0'
+      self.base_url = "https://docs.haproxy.org/#{self.version}/"
+    end
+
+    version '2.7' do
+      self.release = '2.7.0'
+      self.base_url = "https://docs.haproxy.org/#{self.version}/"
+    end
+
+    version '2.6' do
+      self.release = '2.6.5'
+      self.base_url = "https://docs.haproxy.org/#{self.version}/"
+    end
+
+    version '2.5' do
+      self.release = '2.5.8'
+      self.base_url = "https://docs.haproxy.org/#{self.version}/"
+    end
+
     version '2.4' do
-      self.release = '2.4.0'
-      self.base_url = "https://cbonte.github.io/haproxy-dconv/#{self.version}/"
+      self.release = '2.4.18'
+      self.base_url = "https://docs.haproxy.org/#{self.version}/"
     end
 
     version '2.3' do
@@ -61,8 +91,8 @@ module Docs
     end
 
     def get_latest_version(opts)
-      doc = fetch_doc('http://www.haproxy.org', opts)
-      doc.at_css('table[cols=6]').css('tr')[1].at_css('td').content
+      doc = fetch_doc('https://www.haproxy.org', opts)
+      doc.at_css('table[cols=6]').at_css('tr:not(:first-child) > td:first-child:not(:contains("dev"))').content
     end
   end
 end

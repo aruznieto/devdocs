@@ -10,11 +10,14 @@ module Docs
           container = at_css 'main'
 
           # Add <dl> mentioning parent class and included modules
-          meta = Nokogiri::XML::Node.new 'dl', doc
+          meta = Nokogiri::XML::Node.new 'dl', doc.document
           meta['class'] = 'meta'
 
-          if parent = at_css('#parent-class-section')
-            meta << %(<dt>Parent:</dt><dd class="meta-parent">#{parent.at_css('.link').inner_html.strip}</dd>)
+          parent = at_css('#parent-class-section')
+          if parent && link = parent.at_css('.link')
+            meta << %(<dt>Parent:</dt><dd class="meta-parent">#{link.inner_html.strip}</dd>)
+          elsif parent && link = parent.at_css('a')
+            meta << %(<dt>Parent:</dt><dd class="meta-parent">#{link.to_html}</dd>)
           end
 
           if includes = at_css('#includes-section')
